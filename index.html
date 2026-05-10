@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DigitiseCraft Review Infrastructure</title>
+
+<style>
+:root{
+  --bg:#0b1f3a;
+  --deep:#050b14;
+  --text:#ffffff;
+  --muted:rgba(255,255,255,.72);
+  --soft:rgba(255,255,255,.10);
+  --cyan:#2fd4ff;
+  --blue:#3aa6ff;
+  --violet:#7a6cff;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 18% 10%,rgba(47,212,255,.16),transparent 30%),
+    radial-gradient(circle at 82% 16%,rgba(122,108,255,.16),transparent 32%),
+    linear-gradient(180deg,var(--bg),var(--deep));
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:56px 56px;
+  opacity:.28;
+}
+
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:42px 22px;
+}
+
+.wrap{
+  width:100%;
+  max-width:590px;
+  position:relative;
+  z-index:2;
+  text-align:center;
+}
+
+.brand{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 18px;
+  border:1px solid rgba(47,212,255,.32);
+  border-radius:999px;
+  color:var(--cyan);
+  background:rgba(255,255,255,.025);
+  font-weight:700;
+  margin-bottom:18px;
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  box-shadow:0 0 18px rgba(47,212,255,.7);
+}
+
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:11px 17px;
+  border-radius:999px;
+  border:1px solid var(--soft);
+  background:rgba(255,255,255,.04);
+  color:rgba(255,255,255,.86);
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin-bottom:24px;
+}
+
+.status span{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 16px rgba(47,212,255,.65);
+}
+
+h1{
+  font-size:clamp(38px,9vw,64px);
+  line-height:1.03;
+  letter-spacing:-.055em;
+  font-weight:900;
+  margin-bottom:20px;
+}
+
+.cross{
+  color:rgba(255,255,255,.36);
+  text-decoration:line-through;
+}
+
+.grad{
+  background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.sub{
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.65;
+  max-width:520px;
+  margin:0 auto 28px;
+}
+
+.panel{
+  position:relative;
+  overflow:hidden;
+  border-radius:24px;
+  border:1px solid var(--soft);
+  background:
+    radial-gradient(circle at 20% 20%,rgba(47,212,255,.11),transparent 28%),
+    radial-gradient(circle at 82% 18%,rgba(122,108,255,.11),transparent 30%),
+    rgba(255,255,255,.035);
+  padding:20px;
+  margin-bottom:24px;
+  box-shadow:0 24px 70px rgba(0,0,0,.32);
+}
+
+.scan{
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),var(--blue),transparent);
+  animation:scan 3.8s linear infinite;
+}
+
+@keyframes scan{
+  from{top:0}
+  to{top:100%}
+}
+
+.terminal{
+  position:relative;
+  z-index:2;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  background:rgba(0,0,0,.18);
+  padding:16px;
+  margin-bottom:14px;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  font-size:13px;
+  margin-bottom:10px;
+  text-align:left;
+}
+
+.row:last-child{margin-bottom:0;}
+
+.label{
+  color:rgba(255,255,255,.46);
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.value{
+  color:#fff;
+  font-weight:700;
+  text-align:right;
+}
+
+.grid{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.card{
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+  padding:15px;
+  text-align:left;
+}
+
+.card small{
+  display:block;
+  color:rgba(255,255,255,.46);
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  margin-bottom:8px;
+}
+
+.card strong{
+  font-size:15px;
+  line-height:1.4;
+}
+
+.buttons{
+  display:grid;
+  gap:14px;
+}
+
+.btn{
+  min-height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  text-decoration:none;
+  font-size:16px;
+  font-weight:800;
+  transition:.2s ease;
+}
+
+.btn:hover{transform:translateY(-2px);}
+
+.primary{
+  color:#07131f;
+  background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet));
+  box-shadow:0 0 34px rgba(47,212,255,.22);
+}
+
+.secondary{
+  color:#fff;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.15);
+}
+
+.note{
+  margin-top:16px;
+  font-size:12px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.48);
+}
+
+@media(max-width:560px){
+  .hero{padding:28px 18px;}
+  .grid{grid-template-columns:1fr;}
+  h1{font-size:43px;}
+  .sub{font-size:16px;}
+  .row{font-size:12px;}
+}
+</style>
+</head>
+
+<body>
+
+<section class="hero">
+  <div class="wrap">
+
+    <div class="brand">
+      <div class="dot"></div>
+      DigitiseCraft
+    </div>
+
+    <div class="status">
+      <span></span>
+      Review Infrastructure Audit Available
+    </div>
+
+    <h1>
+      Reviews don’t come<br>
+      from <span class="cross">marketing</span><br>
+      they come from<br>
+      <span class="grad">infrastructure.</span>
+    </h1>
+
+    <p class="sub">
+      We design systems that generate consistent Google reviews through
+      behaviour, timing and placement for local businesses.
+    </p>
+
+    <div class="panel">
+      <div class="scan"></div>
+
+      <div class="terminal">
+        <div class="row">
+          <div class="label">Status</div>
+          <div class="value">System Scan Ready</div>
+        </div>
+        <div class="row">
+          <div class="label">Focus</div>
+          <div class="value">Trigger • Placement • Flow</div>
+        </div>
+        <div class="row">
+          <div class="label">Output</div>
+          <div class="value">Predictable Review Velocity</div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <small>Positioning</small>
+          <strong>Infrastructure, not just QR codes or reminders</strong>
+        </div>
+
+        <div class="card">
+          <small>Use Cases</small>
+          <strong>Salons, restaurants, hotels, wellness, clinics & hospitality</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <a
+        class="btn primary"
+        href="https://wa.me/447440484460?text=Hi%20I%20want%20a%20DigitiseCraft%20review%20system%20audit"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Get Free Audit
+      </a>
+
+      <a
+        class="btn secondary"
+        href="infrastructure.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        View Infrastructure →
+      </a>
+    </div>
+
+    <div class="note">
+      System / Infrastructure / Tech
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>
